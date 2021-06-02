@@ -36,8 +36,7 @@ Este archivo contiene la implementación del TAD grafo no dirigido
 def newGraph(datastructure="ADJ_LIST",
              directed=False,
              size=10,
-             comparefunction=None
-             ):
+             comparefunction=None):
     """
     Crea un grafo vacio
 

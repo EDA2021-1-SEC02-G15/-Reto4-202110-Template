@@ -33,6 +33,9 @@ Presenta el menu de opciones y por cada seleccion
 se hace la solicitud al controlador para ejecutar la
 operación solicitada
 """
+countriesfile = 'countries.csv'
+concectionsfile = 'connections.csv'
+landingfile = 'landing_points.csv'
 
 def printMenu():
     print("Bienvenido")
