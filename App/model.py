@@ -351,6 +351,15 @@ def requerimiento2(analyzer):
         i+=1
 
     return total, rta
+def requerimiento3(analyzer, p1,p2):
+
+    c1 = encontrar_capital(analyzer,p1)
+    c2= encontrar_capital(analyzer,p2)
+
+    d = distancia_total(analyzer, c1,c2)
+    return d
+
+
 
 #Funciones Helper
 
@@ -369,6 +378,70 @@ def separador_comas(cadena:str):
     n_cadena = cadena.split(",")
 
     return n_cadena
+
+def encontrar_capital(analyzer, pais):
+
+    tabla = analyzer['countries']
+    capital = None
+    capitales = mp.keySet(tabla)
+    tam = mp.size(capitales)
+    i=0
+
+    while i < tam:
+        pareja = m.get(tabla, capitales[i])
+        pais_d = pareja[1][2]
+        if pais_d == pais:
+            capital = capitales[i]
+
+        i+=1
+
+    return capital
+
+def distancia_total(analyzer, lp1,lp2):
+
+    tabla = analyzer['countries']
+    tabla2 = analyzer['landing_points']
+    capitales = mp.keySet(tabla)
+    lp = mp.keySet(tabla2)
+    distancia = 0
+
+    if lt.isPresent(capitales, lp1):
+        pair= mp.get(tabla,lp1)
+        lat1= pair[1][0]
+        long1 = pair[1][1]
+
+        if lt.isPresent(capitales, lp2):
+            pair2= mp.get(tabla,lp2)
+            lat2= pair2[1][0]
+            long2 = pair2[1][1]
+
+            distancia = distancia_harversine(lat1,long1,lat2,long2)
+        elif lt.isPresent(tabla2, lp2):
+            pair2 = mp.get(tabla2,lp2)
+            lat2= pair2[1][0]
+            long2 = pair2[1][1]
+            distancia = distancia_harversine(lat1,long1,lat2,long2)
+
+    elif lt.isPresent(tabla2, lp1):
+        pair = mp.get(tabla2,lp1)
+        lat1= pair[1][0]
+        long1 = pair[1][1]
+
+        if lt.isPresent(capitales, lp2):
+            pair2= mp.get(tabla,lp2)
+            lat2= pair2[1][0]
+            long2 = pair2[1][1]
+
+            distancia = distancia_harversine(lat1,long1,lat2,long2)
+        elif lt.isPresent(tabla2, lp2):
+            pair2 = mp.get(tabla2,lp2)
+            lat2= pair2[1][0]
+            long2 = pair2[1][1]
+            distancia = distancia_harversine(lat1,long1,lat2,long2)
+
+    return distancia
+
+
 
 # Funciones utilizadas para comparar elementos dentro de una lista
 def compareLandingIds(stop, keyvaluestop):
