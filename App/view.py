@@ -20,6 +20,7 @@
  * along withthis program.  If not, see <http://www.gnu.org/licenses/>.
  """
 
+from model import analyzer
 import config as cf
 import sys
 import controller
@@ -39,10 +40,11 @@ landingfile = 'landing_points.csv'
 
 def printMenu():
     print("Bienvenido")
-    print("1- Cargar información en el catálogo")
-    print("2- ")
+    print("1- Inicializar analizador.")
+    print("2- Cargar información del catálogo.")
+    print("3- Componentes conectados.")
 
-catalog = None
+analyzer = None
 
 """
 Menu principal
@@ -51,10 +53,29 @@ while True:
     printMenu()
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
-        print("Cargando información de los archivos ....")
+        print("\nInicializando...")
+        analyzer = controller.init()
+        controller.loadData(analyzer, countriesfile,landingfile,concectionsfile)
 
     elif int(inputs[0]) == 2:
-        pass
+        informacion =  controller.consulta_datos(analyzer)
+
+        print('\n El total de landing points es: ' ,informacion[0])
+        print('El total de conexiones entre landing points es: ', informacion[1])
+        print('El total de países cargados es de: ', informacion[2])
+        print('El primer landing point es: ', informacion[4], ", su código es: ", informacion[3],", su latitud es ", informacion[5], "y su longitud es: ", informacion[6])
+    
+    elif int(inputs[0] == 3):
+        lp1= input("Digite el id del landing point 1.")
+        lp2= input("Digite el id del landing point 2.")
+
+        rta= controller.requerimiento1(analyzer,lp1,lp2)
+        print('El número total de clúseteres es de: ', rta[0])
+        if rta[1]:
+            print('Los landing points están en el mismo cluster.')
+        
+        else: 
+            print('Los landing points no están en el mismo cluster.')
 
     else:
         sys.exit(0)

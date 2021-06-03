@@ -287,39 +287,43 @@ def conexion_total(analyzer):
     return analyzer
 
 
-def addConnection(analyzer, origin, destination, distance):
-    """
-    Adiciona un arco entre dos estaciones
-    """
-    edge = gr.getEdge(analyzer['connections'], origin, destination)
-    if edge is None:
-        gr.addEdge(analyzer['connections'], origin, destination, distance)
-    return analyzer
-
 # Funciones para creacion de datos
 
 # Funciones de consulta
+def carga_datos(analyzer):
+
+    num_landing_points= gr.numVertices(analyzer['graph'])
+    num_conections = gr.numEdges(analyzer['graph'])
+    total_paises = lt.size(mp.keySet(analyzer['countries']))
+    vertice_p = gr.vertices(analyzer['graph'])
+    prim_vert = lt.firstElement(vertice_p)
+    tabla = analyzer['landing_points']
+    print(vertice_p)
+    detalles = mp.get(tabla, prim_vert)
+    code = detalles[0]
+    name = separador_comas(detalles[1][3])[0]
+    lat = detalles[1][0]
+    long = detalles[1][1]
+
+    return num_landing_points, num_conections, total_paises, code,name, lat,long
+
+def requerimiento1(analyzer,lp1, lp2):
+
+    n_cluster = gr.adjacentEdges(analyzer['graph'],lp1)
+    n_cluster2 = gr.adjacentEdges(analyzer['graph'],lp2)
+    adyacentes = gr.adjacents(analyzer['graph'],lp1)
+    tam1 = lt.size(n_cluster)
+    tam2 = lt.size(n_cluster2)
+    total = tam1 + tam2
+    relacion = False
+    if lt.isPresent(adyacentes, lp2):
+        relacion = True
+    
+    return total, relacion
+
+
 
 #Funciones Helper
-def cleanServiceDistance(lastservice, service):
-    """
-    En caso de que el archivo tenga un espacio en la
-    distancia, se reemplaza con cero.
-    """
-    if service['Distance'] == '':
-        service['Distance'] = 0
-    if lastservice['Distance'] == '':
-        lastservice['Distance'] = 0
-
-
-def formatVertex(service):
-    """
-    Se formatea el nombrer del vertice con el id de la estación
-    seguido de la ruta.
-    """
-    name = service['BusStopCode'] + '-'
-    name = name + service['ServiceNo']
-    return name
 
 def distancia_harversine(latitud1, longitud1, latitud2, longitud2):
 
