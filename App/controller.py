@@ -36,6 +36,11 @@ def init():
     return analyzer
 
 # Funciones para la carga de datos
+def loadData(analyzer,countriesfile,landingfile,concectionsfile):
+    loadCountries(analyzer,countriesfile)
+    load_landing(analyzer, landingfile)
+    loadconnections(analyzer,concectionsfile)
+
 
 def loadCountries(analyzer, countriesfile):
 
@@ -54,28 +59,26 @@ def load_landing(analyzer, landingfile):
     for lp in landingfile:
         model.addLanding(analyzer, lp)
 
-def loadCountries(analyzer,concectionsfile):
+def loadconnections(analyzer,concectionsfile):
 
     concectionsfile = cf.data_dir + concectionsfile
     input_file = csv.DictReader(open(concectionsfile, encoding= "utf-8"), delimiter = ",")
 
     for conect in concectionsfile:
-        model.addCountry(analyzer, conect)
+        model.addConnection(analyzer, conect)
  
-
-
-
-
-
 
 # Funciones de ordenamiento
 
 # Funciones de consulta sobre el catálogo
 
+def consulta_datos(analyzer):
+
+    return model.carga_datos(analyzer)
 
 
-
-
+def requerimiento1(analyzer, lp1,lp2):
+    return model.requerimiento1(analyzer,lp1,lp2)
 
 
 
