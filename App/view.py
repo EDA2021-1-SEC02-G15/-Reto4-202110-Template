@@ -44,6 +44,7 @@ def printMenu():
     print("2- Cargar información del catálogo.")
     print("3- Componentes conectados.")
     print("4- Encontrar landing points.")
+    print("5- El mejor camino entre dos países.")
 
 analyzer = None
 
@@ -83,6 +84,14 @@ while True:
         rta = controller.requerimiento2(analyzer)
         print("Los landing point son: ", rta[1])
         print("El número total de conexiones es de: ", rta[0])
+
+    elif int(inputs[0] ==5):
+        p1= input("Digite el primer país.")
+        p2= input("Digite el segundo país.")
+
+        rta = controller.requerimiento3(analyzer,p1,p2)
+
+        print('La distancia total entre las capitales de ambos países es: ', rta)
 
     else:
         sys.exit(0)
