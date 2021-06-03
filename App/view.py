@@ -43,6 +43,7 @@ def printMenu():
     print("1- Inicializar analizador.")
     print("2- Cargar información del catálogo.")
     print("3- Componentes conectados.")
+    print("4- Encontrar landing points.")
 
 analyzer = None
 
@@ -76,6 +77,12 @@ while True:
         
         else: 
             print('Los landing points no están en el mismo cluster.')
+
+    elif int(inputs[0] == 4):
+
+        rta = controller.requerimiento2(analyzer)
+        print("Los landing point son: ", rta[1])
+        print("El número total de conexiones es de: ", rta[0])
 
     else:
         sys.exit(0)

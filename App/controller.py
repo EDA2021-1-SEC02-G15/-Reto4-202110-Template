@@ -80,5 +80,8 @@ def consulta_datos(analyzer):
 def requerimiento1(analyzer, lp1,lp2):
     return model.requerimiento1(analyzer,lp1,lp2)
 
+def requerimiento2(analyzer):
+    return model.requerimiento2(analyzer)
+
 
 

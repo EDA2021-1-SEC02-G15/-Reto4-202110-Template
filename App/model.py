@@ -321,7 +321,36 @@ def requerimiento1(analyzer,lp1, lp2):
     
     return total, relacion
 
+def requerimiento2(analyzer):
 
+    grafo = analyzer['graph']
+    tabla = analyzer['landing_points']
+    rta = lt.newList()
+    vertices= gr.vertices(grafo)
+    tam = lt.size(vertices)
+    i=0
+    total = 0
+
+    while i < tam:
+        cables = gr.adjacents(vertices[i])
+        n_cables  = lt.size(cables)
+        total = total + n_cables
+        pareja = mp.get(tabla, vertices[i])
+        l_temp = lt.newList()
+        code = pareja[0]
+        semi_name = separador_comas(pareja[1][2])
+        name = semi_name[0]
+        pais = semi_name[1]
+
+        lt.addLast(l_temp, name)
+        lt.addLast(l_temp, pais)
+        lt.addLast(l_temp, code)
+
+        lt.addLast(rta, l_temp)
+
+        i+=1
+
+    return total, rta
 
 #Funciones Helper
 
