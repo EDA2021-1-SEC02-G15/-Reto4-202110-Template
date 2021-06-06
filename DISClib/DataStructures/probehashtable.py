@@ -237,7 +237,7 @@ def keySet(map):
         Exception
     """
     try:
-        ltset = lt.newList()
+        ltset = lt.newList(datastructure='ARRAY_LIST')
         for pos in range(lt.size(map['table'])):
             entry = lt.getElement(map['table'], pos+1)
             if (entry['key'] is not None and entry['key'] != '__EMPTY__'):
@@ -259,7 +259,7 @@ def valueSet(map):
         Exception
     """
     try:
-        ltset = lt.newList()
+        ltset = lt.newList(datastructure= 'ARRAY_LIST')
         for pos in range(lt.size(map['table'])):
             entry = lt.getElement(map['table'], pos+1)
             if (entry['value'] is not None and entry['value'] != '__EMPTY__'):
@@ -348,7 +348,7 @@ def rehash(map):
     todos los elementos de la tabla.
     """
     try:
-        newtable = lt.newList('ARRAY_LIST', map['comparefunction'])
+        newtable = lt.newList(datastructure='ARRAY_LIST', cmpfunction = map['comparefunction'])
         capacity = nextPrime(map['capacity']*2)
         for _ in range(capacity):
             entry = me.newMapEntry(None, None)

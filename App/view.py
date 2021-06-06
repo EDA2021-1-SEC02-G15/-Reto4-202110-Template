@@ -58,6 +58,7 @@ while True:
         print("\nInicializando...")
         analyzer = controller.init()
         controller.loadData(analyzer, countriesfile,landingfile,concectionsfile)
+        controller.conexion_total(analyzer)
 
     elif int(inputs[0]) == 2:
         informacion =  controller.consulta_datos(analyzer)
