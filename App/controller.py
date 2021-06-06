@@ -35,6 +35,8 @@ def init():
     analyzer = model.analyzer()
     return analyzer
 
+
+
 # Funciones para la carga de datos
 def loadData(analyzer,countriesfile,landingfile,concectionsfile):
     loadCountries(analyzer,countriesfile)
@@ -47,26 +49,28 @@ def loadCountries(analyzer, countriesfile):
     countriesfile = cf.data_dir + countriesfile
     input_file = csv.DictReader(open(countriesfile, encoding= "utf-8"), delimiter = ",")
 
-    for country in countriesfile:
+    for country in input_file:
         model.addCountry(analyzer, country)
 
 
 def load_landing(analyzer, landingfile):
 
     landingfile = cf.data_dir + landingfile
-    input_file = csv.DictReader(open(landingfile, encoding= "utf-8"), delimiter = ",")
+    input_file2 = csv.DictReader(open(landingfile, encoding= "utf-8"), delimiter = ",")
 
-    for lp in landingfile:
+    for lp in input_file2:
         model.addLanding(analyzer, lp)
 
 def loadconnections(analyzer,concectionsfile):
 
     concectionsfile = cf.data_dir + concectionsfile
-    input_file = csv.DictReader(open(concectionsfile, encoding= "utf-8"), delimiter = ",")
+    input_file3 = csv.DictReader(open(concectionsfile, encoding= "utf-8"), delimiter = ",")
 
-    for conect in concectionsfile:
+    for conect in input_file3:
         model.addConnection(analyzer, conect)
  
+def conexion_total(analyzer):
+    return model.conexion_total(analyzer)
 
 # Funciones de ordenamiento
 

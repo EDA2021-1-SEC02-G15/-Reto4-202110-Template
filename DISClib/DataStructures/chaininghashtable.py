@@ -244,7 +244,7 @@ def keySet(map):
         Exception
     """
     try:
-        ltset = lt.newList('SINGLE_LINKED', map['comparefunction'])
+        ltset = lt.newList(datastructure='ARRAY_LIST')
         for pos in range(lt.size(map['table'])):
             bucket = lt.getElement(map['table'], pos+1)
             if(not lt.isEmpty(bucket)):
@@ -268,7 +268,7 @@ def valueSet(map):
         Exception
     """
     try:
-        ltset = lt.newList('SINGLE_LINKED', map['comparefunction'])
+        ltset = lt.newList(datastructure='ARRAY_LIST')
         for pos in range(lt.size(map['table'])):
             bucket = lt.getElement(map['table'], pos+1)
             if (not lt.isEmpty(bucket)):
