@@ -296,14 +296,16 @@ def carga_datos(analyzer):
     num_conections = gr.numEdges(analyzer['graph'])
     total_paises = lt.size(mp.keySet(analyzer['countries']))
     vertice_p = gr.vertices(analyzer['graph'])
-    prim_vert = lt.firstElement(vertice_p)
+    prim_vert = vertice_p['elements'][0]
     tabla = analyzer['landing_points']
-    print(vertice_p)
+
     detalles = mp.get(tabla, prim_vert)
-    code = detalles[0]
-    name = separador_comas(detalles[1][3])[0]
-    lat = detalles[1][0]
-    long = detalles[1][1]
+    print(detalles)
+    code = detalles['key']
+    name = conseguir_nciudad(separador_comas(detalles['value']['elements'][2]))
+  
+    lat = detalles['value']['elements'][0]
+    long = detalles['value']['elements'][1]
 
     return num_landing_points, num_conections, total_paises, code,name, lat,long
 

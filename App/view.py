@@ -68,7 +68,7 @@ while True:
         print('El total de países cargados es de: ', informacion[2])
         print('El primer landing point es: ', informacion[4], ", su código es: ", informacion[3],", su latitud es ", informacion[5], "y su longitud es: ", informacion[6])
     
-    elif int(inputs[0] == 3):
+    elif int(inputs[0]) == 3:
         lp1= input("Digite el id del landing point 1.")
         lp2= input("Digite el id del landing point 2.")
 
@@ -80,13 +80,13 @@ while True:
         else: 
             print('Los landing points no están en el mismo cluster.')
 
-    elif int(inputs[0] == 4):
+    elif int(inputs[0]) == 5:
 
         rta = controller.requerimiento2(analyzer)
         print("Los landing point son: ", rta[1])
         print("El número total de conexiones es de: ", rta[0])
 
-    elif int(inputs[0] ==5):
+    elif int(inputs[0]) == 5:
         p1= input("Digite el primer país.")
         p2= input("Digite el segundo país.")
 
