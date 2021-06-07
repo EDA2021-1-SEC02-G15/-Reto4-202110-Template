@@ -90,5 +90,12 @@ def requerimiento2(analyzer):
 def requerimiento3(analyzer, p1,p2):
     return model.requerimiento3(analyzer,p1,p2)
 
+def requerimiento4(analyzer):
+    return model.requerimiento4(analyzer)
+
+def requerimiento5(analyzer,lp):
+    return model.requerimiento5(analyzer,lp)
+
+
 
 

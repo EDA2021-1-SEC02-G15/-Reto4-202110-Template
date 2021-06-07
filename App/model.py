@@ -33,6 +33,7 @@ from DISClib.Algorithms.Graphs import scc
 from DISClib.DataStructures import mapentry as me
 from DISClib.Algorithms.Sorting import shellsort as sa
 from DISClib.Algorithms.Graphs import dijsktra as djk
+from DISClib.Algorithms.Graphs import prim as pr
 from DISClib.Utils import error as error
 from math import radians, cos, sin, asin, sqrt
 assert cf
@@ -327,39 +328,32 @@ def requerimiento2(analyzer):
 
     grafo = analyzer['graph']
     tabla = analyzer['landing_points']
-    rta = lt.newList(datastructure='ARRAY_LIST')
+    rta = lt.newList()
     vertices= gr.vertices(grafo)
-    tam = len(vertices['elements'])
+    tam = lt.size(vertices)
     i=0
     total = 0
 
     while i < tam:
-        cables = gr.adjacents(grafo,vertices['elements'][i])
-        n_cables  = len(cables['elements'])
+        cables = gr.adjacents(vertices[i])
+        n_cables  = lt.size(cables)
         total = total + n_cables
-        pareja = mp.get(tabla, vertices['elements'][i])
-        l_temp = lt.newList(datastructure= 'ARRAY_LIST')
-        code = pareja['key']
-        semi_name = separador_comas(pareja['value']['elements'][2])
-        name = name = conseguir_nciudad(semi_name)
-        pais = None
-        if len(semi_name) > 1:
-
-            pais = conseguir_npais(semi_name)
+        pareja = mp.get(tabla, vertices[i])
+        l_temp = lt.newList()
+        code = pareja[0]
+        semi_name = separador_comas(pareja[1][2])
+        name = semi_name[0]
+        pais = semi_name[1]
 
         lt.addLast(l_temp, name)
         lt.addLast(l_temp, pais)
         lt.addLast(l_temp, code)
-        lt.addLast(rta,l_temp)
 
-        rta2 = rta['elements'][i]['elements']
-        print(rta2)
+        lt.addLast(rta, l_temp)
 
-        
         i+=1
 
-    return total
-
+    return total, rta
 def requerimiento3(analyzer, p1,p2):
 
     c1 = encontrar_capital(analyzer,p1)
@@ -367,6 +361,27 @@ def requerimiento3(analyzer, p1,p2):
 
     d = distancia_total(analyzer, c1,c2)
     return d
+
+def requerimiento4(analyzer):
+    graph=analyzer["graph"]
+    search=pr.PrimMST(graph)
+    peso=pr.weightMST(graph,search)
+    return peso
+
+def requerimiento5(analyzer,lp):
+    graph=analyzer["graph"]
+    afectados=gr.degree(graph,lp)
+    adyacentes=gr.adjacents(graph,lp)
+    lista=lt.newList()
+    for i in range(lt.size(adyacentes)+1):
+        vertice=lt.getElement(i)
+        arco=gr.getEdge(vertice,lp)
+        distancia=arco["weight"]
+        vertice={"dist":distancia}
+        lt.addLast(vertice)
+    return (afectados,sortDistancia(lista))
+    
+         
 
 
 
@@ -404,9 +419,9 @@ def conseguir_nciudad(lista):
     nombre = ''
     tam = len(lista)
     if tam < 2:
-        nombre = lista[0]
+        nombre = lista
     elif tam == 2 :
-        nombre= lista[tam-2]
+        nombre=  lista[tam-2]
     elif tam < 3:
         nombre = lista[tam-3]
     return nombre
@@ -417,18 +432,14 @@ def encontrar_capital(analyzer, pais):
     tabla = analyzer['countries']
     capital = None
     capitales = mp.keySet(tabla)
-    tam = len(capitales['elements'])
+    tam = mp.size(capitales)
     i=0
-    x = capitales['elements'][17]
-  
-    while i < tam:
 
-        pareja = mp.get(tabla, x[i])
-        print(pareja)
-        pais_d = pareja['value'][2]
-        
+    while i < tam:
+        pareja = mp.get(tabla, capitales[i])
+        pais_d = pareja[1][2]
         if pais_d == pais:
-            capital = capitales['elements'][i]
+            capital = capitales[i]
 
         i+=1
 
@@ -444,36 +455,36 @@ def distancia_total(analyzer, lp1,lp2):
 
     if lt.isPresent(capitales, lp1):
         pair= mp.get(tabla,lp1)
-        lat1= pair['value'][0]
-        long1 = pair['value'][1]
+        lat1= pair[1][0]
+        long1 = pair[1][1]
 
         if lt.isPresent(capitales, lp2):
             pair2= mp.get(tabla,lp2)
-            lat2= pair2['value'][0]
-            long2 = pair2['value'][1]
+            lat2= pair2[1][0]
+            long2 = pair2[1][1]
 
             distancia = distancia_harversine(lat1,long1,lat2,long2)
         elif lt.isPresent(tabla2, lp2):
             pair2 = mp.get(tabla2,lp2)
-            lat2= pair2['value'][0]
-            long2 = pair2['value'][1]
+            lat2= pair2[1][0]
+            long2 = pair2[1][1]
             distancia = distancia_harversine(lat1,long1,lat2,long2)
 
     elif lt.isPresent(tabla2, lp1):
         pair = mp.get(tabla2,lp1)
-        lat1= pair['value'][0]
-        long1 = pair['value'][1]
+        lat1= pair[1][0]
+        long1 = pair[1][1]
 
         if lt.isPresent(capitales, lp2):
             pair2= mp.get(tabla,lp2)
-            lat2= pair2['value'][0]
-            long2 = pair2['value'][1]
+            lat2= pair2[1][0]
+            long2 = pair2[1][1]
 
             distancia = distancia_harversine(lat1,long1,lat2,long2)
         elif lt.isPresent(tabla2, lp2):
             pair2 = mp.get(tabla2,lp2)
-            lat2= pair2['value'][0]
-            long2 = pair2['value'][1]
+            lat2= pair2[1][0]
+            long2 = pair2[1][1]
             distancia = distancia_harversine(lat1,long1,lat2,long2)
 
     return distancia
@@ -500,5 +511,19 @@ def compareroutes(route1, route2):
     else:
         return -1
 
+def compareDistance(vert1,vert2):
+    dist1=vert1["dist"]
+    dist2=vert2["dist"]
+
+    if dist1<=dist2:
+        return True
+    else:
+        return False
+
+
 
 # Funciones de ordenamiento
+
+def sortDistancia(lista):
+    sorted_list=sa.sort(lista,compareDistance)
+    return sorted_list

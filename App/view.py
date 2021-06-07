@@ -45,6 +45,8 @@ def printMenu():
     print("3- Componentes conectados.")
     print("4- Encontrar landing points.")
     print("5- El mejor camino entre dos países.")
+    print("6- Red de expansion minima.")
+    print("7- Eliminar un landing point")
 
 analyzer = None
 
@@ -69,8 +71,8 @@ while True:
         print('El primer landing point es: ', informacion[4], ", su código es: ", informacion[3],", su latitud es ", informacion[5], "y su longitud es: ", informacion[6])
     
     elif int(inputs[0]) == 3:
-        lp1= input("Digite el id del landing point 1: ")
-        lp2= input("Digite el id del landing point 2: ")
+        lp1= input("Digite el id del landing point 1.")
+        lp2= input("Digite el id del landing point 2.")
 
         rta= controller.requerimiento1(analyzer,lp1,lp2)
         print('El número total de clúseteres es de: ', rta[0])
@@ -80,19 +82,30 @@ while True:
         else: 
             print('Los landing points no están en el mismo cluster.')
 
-    elif int(inputs[0]) == 4:
+    elif int(inputs[0]) == 5:
 
-        reta = controller.requerimiento2(analyzer)
-        
-        print("El número total de conexiones es de: ", reta)
+        rta = controller.requerimiento2(analyzer)
+        print("Los landing point son: ", rta[1])
+        print("El número total de conexiones es de: ", rta[0])
 
     elif int(inputs[0]) == 5:
-        p1= input("Digite el primer país: ")
-        p2= input("Digite el segundo país: ")
+        p1= input("Digite el primer país.")
+        p2= input("Digite el segundo país.")
 
         rta = controller.requerimiento3(analyzer,p1,p2)
 
         print('La distancia total entre las capitales de ambos países es: ', rta)
+    
+    elif int(inputs[0]) == 6:
+        rta=controller.requerimiento4(analyzer)
+
+        print("El costo total de la red de expansion minima es de " + rta + " kilometros.")
+    
+    elif int(inputs[0]) == 7:
+        lp=input("Escriba el Landing Point que desea eliminar: ")
+        rta=controller.requerimiento5(analyzer,lp)
+        print("El numero de paises afectados por eliminar el landing point " +lp+ " es " +rta[0])
+        print("La lista de paises afectados es: " +rta[1])
 
     else:
         sys.exit(0)
