@@ -327,32 +327,39 @@ def requerimiento2(analyzer):
 
     grafo = analyzer['graph']
     tabla = analyzer['landing_points']
-    rta = lt.newList()
+    rta = lt.newList(datastructure='ARRAY_LIST')
     vertices= gr.vertices(grafo)
-    tam = lt.size(vertices)
+    tam = len(vertices['elements'])
     i=0
     total = 0
 
     while i < tam:
-        cables = gr.adjacents(vertices[i])
-        n_cables  = lt.size(cables)
+        cables = gr.adjacents(grafo,vertices['elements'][i])
+        n_cables  = len(cables['elements'])
         total = total + n_cables
-        pareja = mp.get(tabla, vertices[i])
-        l_temp = lt.newList()
-        code = pareja[0]
-        semi_name = separador_comas(pareja[1][2])
-        name = semi_name[0]
-        pais = semi_name[1]
+        pareja = mp.get(tabla, vertices['elements'][i])
+        l_temp = lt.newList(datastructure= 'ARRAY_LIST')
+        code = pareja['key']
+        semi_name = separador_comas(pareja['value']['elements'][2])
+        name = name = conseguir_nciudad(semi_name)
+        pais = None
+        if len(semi_name) > 1:
+
+            pais = conseguir_npais(semi_name)
 
         lt.addLast(l_temp, name)
         lt.addLast(l_temp, pais)
         lt.addLast(l_temp, code)
+        lt.addLast(rta,l_temp)
 
-        lt.addLast(rta, l_temp)
+        rta2 = rta['elements'][i]['elements']
+        print(rta2)
 
+        
         i+=1
 
-    return total, rta
+    return total
+
 def requerimiento3(analyzer, p1,p2):
 
     c1 = encontrar_capital(analyzer,p1)
@@ -397,9 +404,9 @@ def conseguir_nciudad(lista):
     nombre = ''
     tam = len(lista)
     if tam < 2:
-        nombre = lista
+        nombre = lista[0]
     elif tam == 2 :
-        nombre=  lista[tam-2]
+        nombre= lista[tam-2]
     elif tam < 3:
         nombre = lista[tam-3]
     return nombre
@@ -410,14 +417,18 @@ def encontrar_capital(analyzer, pais):
     tabla = analyzer['countries']
     capital = None
     capitales = mp.keySet(tabla)
-    tam = mp.size(capitales)
+    tam = len(capitales['elements'])
     i=0
-
+    x = capitales['elements'][17]
+  
     while i < tam:
-        pareja = mp.get(tabla, capitales[i])
-        pais_d = pareja[1][2]
+
+        pareja = mp.get(tabla, x[i])
+        print(pareja)
+        pais_d = pareja['value'][2]
+        
         if pais_d == pais:
-            capital = capitales[i]
+            capital = capitales['elements'][i]
 
         i+=1
 
@@ -433,36 +444,36 @@ def distancia_total(analyzer, lp1,lp2):
 
     if lt.isPresent(capitales, lp1):
         pair= mp.get(tabla,lp1)
-        lat1= pair[1][0]
-        long1 = pair[1][1]
+        lat1= pair['value'][0]
+        long1 = pair['value'][1]
 
         if lt.isPresent(capitales, lp2):
             pair2= mp.get(tabla,lp2)
-            lat2= pair2[1][0]
-            long2 = pair2[1][1]
+            lat2= pair2['value'][0]
+            long2 = pair2['value'][1]
 
             distancia = distancia_harversine(lat1,long1,lat2,long2)
         elif lt.isPresent(tabla2, lp2):
             pair2 = mp.get(tabla2,lp2)
-            lat2= pair2[1][0]
-            long2 = pair2[1][1]
+            lat2= pair2['value'][0]
+            long2 = pair2['value'][1]
             distancia = distancia_harversine(lat1,long1,lat2,long2)
 
     elif lt.isPresent(tabla2, lp1):
         pair = mp.get(tabla2,lp1)
-        lat1= pair[1][0]
-        long1 = pair[1][1]
+        lat1= pair['value'][0]
+        long1 = pair['value'][1]
 
         if lt.isPresent(capitales, lp2):
             pair2= mp.get(tabla,lp2)
-            lat2= pair2[1][0]
-            long2 = pair2[1][1]
+            lat2= pair2['value'][0]
+            long2 = pair2['value'][1]
 
             distancia = distancia_harversine(lat1,long1,lat2,long2)
         elif lt.isPresent(tabla2, lp2):
             pair2 = mp.get(tabla2,lp2)
-            lat2= pair2[1][0]
-            long2 = pair2[1][1]
+            lat2= pair2['value'][0]
+            long2 = pair2['value'][1]
             distancia = distancia_harversine(lat1,long1,lat2,long2)
 
     return distancia
